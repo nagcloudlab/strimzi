@@ -10,6 +10,7 @@ sudo apt install openjdk-11-jdk
 java -version
 ```
 
+---
 
 download lastest confluent kafka community edition
 ```bash
@@ -151,5 +152,11 @@ kafka-console-producer --topic test --bootstrap-server localhost:9092
 
 console consumer
 ```bash
-kafka-console-consumer --topic test --from-beginning --bootstrap-server localhost:9092
+kafka-console-consumer --topic test  --bootstrap-server localhost:9092 --from-beginning
 ```
+
+delete topic
+```bash
+kafka-topics --delete --topic test --bootstrap-server localhost:9092
+```
+

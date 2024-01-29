@@ -1,9 +1,7 @@
 
-
-
-
 ## kafka broker configuration properties
 
+## https://docs.confluent.io/current/installation/configuration/broker-configs.html
 
 broker.id: 
 
@@ -12,8 +10,9 @@ broker.id:
     - This is used for replication and topic partitioning.
     - If not set, a unique integer is generated.
     - We recommend explicitly setting this to avoid confusion in the future.
-    - The broker ID must be unique across the Kafka cluster.
 
+
+############################# Socket Server Settings #############################
 
 listeners:
 
@@ -27,7 +26,6 @@ advertised.listeners:
     - In IaaS environments, this may need to be different from the interface to which the broker binds.
     - If this is not set, the value for listeners will be used.
     - If listeners is not set, it will use the value returned from `java.net.InetAddress.getCanonicalHostName()`.
-    - If that returns `localhost`, then it will use the value returned from `java.net.InetAddress.getLocalHost().getCanonicalHostName()`.
     - If you want to set Kafka to allow external connections, you must set this to the external IP address.
 
 
@@ -38,8 +36,6 @@ num.network.threads:
     - We recommend setting this to at least 2x the number of cores.
     - The default value is 3.
 
-    
-    
 num.io.threads: 
 
     - The number of I/O threads that the server uses for processing requests, which may include disk I/O.
@@ -69,18 +65,18 @@ socket.receive.buffer.bytes:
 
 socket.request.max.bytes:
 
-    - The maximum size of a request that the socket server will accept (protection against out of memory errors in the case of large requests).
+    - The maximum size of a request that the socket server will accept 
+      (protection against out of memory errors in the case of large requests).
     - The default value is 100MB.
     - If you have a high-bandwidth network, you can increase this value to improve throughput.
-    - For example, if you have a 10G network, you can set this to 1GB.
 
 
+############################# Log Basics #############################
 
 log.dirs: 
     
     - The directories where the Kafka logs are stored. 
     - It can be a single directory or a comma-separated list of directories.
-    - This setting is used when the Kafka server is started.
     - The default value is /tmp/kafka-logs.
     - If you have multiple disks, you can increase throughput by specifying a comma-separated list of directories.
     - For example, if you have a topic with 12 partitions, you can spread the partitions across the disks by setting the following properties:
@@ -99,10 +95,15 @@ num.partitions:
 
 num.recovery.threads.per.data.dir:
 
-    - The number of threads per data directory to be used for log recovery at startup and flushing at shutdown.
+    What is log recovery?
+    - Log recovery is the process of bringing the log files on disk up to date with the current state of the log.
+    - This is done when a broker starts up or when a log segment is rolled out.
+    - Log recovery is done in parallel for all the log partitions on the broker.
+    - The number of threads used for log recovery is controlled by the num.recovery.threads.per.data.dir property.
     - The default value is 1.
-    - We recommend setting this to at least 2.
-- 
+
+
+############################# Internal Topic Settings  #############################
 
 offsets.topic.replication.factor:
 
@@ -118,6 +119,9 @@ transaction.state.log.min.isr:
 
     - The minimum number of in-sync replicas (ISRs) that must be available to write to for the transaction topic.
     - This must be set to a value greater than or equal to the number of brokers.
+
+
+############################# Log Retention Policy #############################
 
 
 log.retention.hours:
@@ -140,7 +144,6 @@ log.retention.bytes:
     - The maximum size of the log before deleting it.
     - The default value is -1, which means that the size is not limited by this setting.
 
-
 log.segment.bytes:
 
     - The maximum size of a log segment file.
@@ -153,6 +156,15 @@ log.retention.check.interval.ms:
     - The interval at which log segments are checked to see if they can be deleted according to the retention policies.
     - The default value is 5 minutes.
 
+
+log.cleanup.policy:
+
+    - The default cleanup policy for segments beyond the retention window.
+    - The policy for deleting log segments. 
+    - The default is "delete". Another option is "compact".
+
+
+############################# Zookeeper #############################
 
 zookeeper.connect:
 
@@ -171,19 +183,16 @@ zookeeper.connection.timeout.ms:
     - The default value is 6000 milliseconds.
     - If you have a ZooKeeper cluster, we recommend setting this to a value greater than 6000 milliseconds for production.
 
+############################# Group Coordinator Settings #############################
 
-log.cleanu.policy:
+group.initial.rebalance.delay.ms:
 
-    - The default cleanup policy for segments beyond the retention window.
-    - The policy for deleting log segments. 
-    - The default is "delete". Another option is "compact".
+    - The amount of time the group coordinator will wait for more consumers to join a new group before performing the first rebalance.
+    - The default value is 0.
+    - We recommend setting this to a higher value for production.
 
 
-message.max.bytes:
-
-    - The maximum size of a message that the server can receive.
-    - The default value is 1000000 bytes.
-
+#############################  #############################
 
 auto.create.topics.enable:
 
@@ -196,6 +205,7 @@ delete.topic.enable:
     - Enable topic deletion on the server.
     - The default value is true.
 
+#############################  #############################
 
 inter.broker.protocol.version:
 
@@ -207,11 +217,12 @@ compression.type:
 
     - Default compression type for newly created topics.
 
-group.initial.rebalance.delay.ms:
 
-    - The amount of time the group coordinator will delay the initial rebalance.
-    - The default value is 0.
+message.max.bytes:
 
+    - The maximum size of a message that the server can receive.
+    - The default value is 1000000 bytes.
+    
 
 -------------------------------------------------------------------------------------------------
 more properties
@@ -304,59 +315,113 @@ replica.socket.timeout.ms:
 -------------------------------------------------------------------------------------------------
 
 
-controlled.shutdown.enable: This setting allows the broker to move all its partitions to other brokers before shutting down, which can be useful for maintenance and upgrades.
+controlled.shutdown.enable: 
 
-controlled.shutdown.max.retries: Specifies the maximum number of retries when attempting controlled shutdown.
+    - This setting allows the broker to move all its partitions to other brokers before shutting down, which can be useful for maintenance and upgrades.
 
-controlled.shutdown.retry.backoff.ms: The time to wait between retries during controlled shutdown.
+controlled.shutdown.max.retries: 
 
-fetch.purgatory.purge.interval.requests: The interval at which the fetch request purgatory is purged of expired requests.
+    - Specifies the maximum number of retries when attempting controlled shutdown.
 
-group.max.session.timeout.ms: The maximum allowed session timeout for registered consumers. Longer timeouts give consumers more time to process messages, but mean longer delays for rebalancing.
+controlled.shutdown.retry.backoff.ms: 
 
-group.min.session.timeout.ms: The minimum allowed session timeout for registered consumers. Shorter timeouts result in quicker consumer rebalancing.
+    - The time to wait between retries during controlled shutdown.
 
-log.cleaner.backoff.ms: The amount of time to wait before attempting to clean the log again after a cleaning job is completed.
+fetch.purgatory.purge.interval.requests: 
 
-log.cleaner.dedupe.buffer.size: The total memory used for log deduplication across all cleaner threads.
+    - The interval at which the fetch request purgatory is purged of expired requests.
 
-log.cleaner.enable: Determines whether log compaction is enabled, which is important for topics where retaining all data is unnecessary.
+group.max.session.timeout.ms: 
 
-log.cleaner.io.buffer.load.factor: The buffer load factor for log cleaner I/O operations.
+    - The maximum allowed session timeout for registered consumers. Longer timeouts give consumers more time to process messages, but mean longer delays for rebalancing.
 
-log.cleaner.io.buffer.size: The size of the I/O buffer for log cleaner threads.
+group.min.session.timeout.ms: 
 
-log.cleaner.io.max.bytes.per.second: The maximum I/O bytes per second that the cleaner is allowed to use.
+    - The minimum allowed session timeout for registered consumers. Shorter timeouts result in quicker consumer rebalancing.
 
-log.cleaner.min.cleanable.ratio: The minimum "dirty" ratio of a log to be eligible for cleaning.
+log.cleaner.backoff.ms: 
 
-log.cleaner.threads: The number of background threads used for log cleaning.
+    - The amount of time to wait before attempting to clean the log again after a cleaning job is completed.
 
-log.message.timestamp.difference.max.ms: The maximum difference allowed between the timestamp when a broker receives a message and the timestamp specified in the message.
+log.cleaner.dedupe.buffer.size: 
 
-log.message.timestamp.type: Specifies whether to use the message timestamp provided by the producer or the broker timestamp when the message is appended.
+    - The total memory used for log deduplication across all cleaner threads.
 
-log.preallocate: Enables log segment file preallocation.
+log.cleaner.enable: 
 
-num.replica.fetchers: The number of fetcher threads used to replicate messages from a source broker. Increasing this can increase replication throughput.
+    - Determines whether log compaction is enabled, which is important for topics where retaining all data is unnecessary.
 
-offset.metadata.max.bytes: The maximum size for a metadata entry associated with an offset commit.
+log.cleaner.io.buffer.load.factor: 
 
-offsets.commit.required.acks: The required acks for offset commit.
+    - The buffer load factor for log cleaner I/O operations.
 
-offsets.commit.timeout.ms: Offset commit will be considered failed if not completed within this time.
+log.cleaner.io.buffer.size: 
 
-offsets.load.buffer.size: Batch size for reading offsets from the offsets log.
+    - The size of the I/O buffer for log cleaner threads.
 
-offsets.retention.check.interval.ms: Frequency at which to check for stale offsets.
+log.cleaner.io.max.bytes.per.second: 
 
-offsets.topic.num.partitions: The number of partitions for the offset commit topic.
+    - The maximum I/O bytes per second that the cleaner is allowed to use.
 
-queued.max.requests: The maximum number of unanswered requests a broker will tolerate before blocking incoming request threads.
+log.cleaner.min.cleanable.ratio: 
 
-replica.selector.class: The class used to select which replicas to assign the leader and followers to.
+    - The minimum "dirty" ratio of a log to be eligible for cleaning.
 
-unclean.leader.election.enable: Determines whether an out-of-sync replica can be elected as leader as a last resort, even though doing so may result in data loss.
+log.cleaner.threads: 
+
+    - The number of background threads used for log cleaning.
+
+log.message.timestamp.difference.max.ms: 
+
+    - The maximum difference allowed between the timestamp when a broker receives a message and the timestamp specified in the message.
+
+log.message.timestamp.type: 
+
+    - Specifies whether to use the message timestamp provided by the producer or the broker timestamp when the message is appended.
+
+log.preallocate: 
+
+    - Enables log segment file preallocation.
+
+num.replica.fetchers: 
+
+    - The number of fetcher threads used to replicate messages from a source broker. Increasing this can increase replication throughput.
+
+offset.metadata.max.bytes: 
+
+    - The maximum size for a metadata entry associated with an offset commit.
+
+offsets.commit.required.acks: 
+
+    - The required acks for offset commit.
+
+offsets.commit.timeout.ms: 
+
+    - Offset commit will be considered failed if not completed within this time.
+
+offsets.load.buffer.size: 
+
+    - Batch size for reading offsets from the offsets log.
+
+offsets.retention.check.interval.ms: 
+
+    - Frequency at which to check for stale offsets.
+
+offsets.topic.num.partitions: 
+
+    - The number of partitions for the offset commit topic.
+
+queued.max.requests: 
+
+    - The maximum number of unanswered requests a broker will tolerate before blocking incoming request threads.
+
+replica.selector.class: 
+
+    - The class used to select which replicas to assign the leader and followers to.
+
+unclean.leader.election.enable: 
+
+    - Determines whether an out-of-sync replica can be elected as leader as a last resort, even though doing so may result in data loss.
 
 
 -------------------------------------------------------------------------------------------------

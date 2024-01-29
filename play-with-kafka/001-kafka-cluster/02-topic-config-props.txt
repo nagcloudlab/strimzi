@@ -1,0 +1,128 @@
+
+
+## kafka topic configuration properties
+--------------------------------------------
+
+👉 Partitions (partitions): 
+
+    - Kafka topics are split into partitions for scalability and parallel processing. 
+    - More partitions allow greater parallelism for consumption, 
+      but this can also lead to more overhead in terms of memory and file descriptors.
+      
+👉 Replication Factor (replication-factor): 
+
+    - This determines how many copies of each partition are maintained. 
+    - A higher replication factor increases fault tolerance but also increases the storage and network load.  
+
+👉 Retention Policy: 
+
+    - Determines how long data is kept in a topic. 
+    - This can be set by time or by total size of data. 
+    
+    Kafka supports two types of retention policies:
+
+    1. Time-based Retention (retention.ms): Data older than the specified time period (in milliseconds) is discarded.
+    2. Size-based Retention (retention.bytes): Limits the total size of the log for the topic.    
+
+
+👉 Cleanup Policy (cleanup.policy): 
+
+    - Specifies how log segments are deleted. 
+    
+    There are two primary policies:
+
+    1. Delete: 
+        - The log segments are deleted according to the retention policy.
+    2. Compact: 
+        - This policy retains at least the last known value for each key within the log. 
+        - Compaction is useful for topics with key-value data where each new message is an update of a previous message.   
+
+
+👉 Segment Size (segment.bytes): 
+
+    - Kafka topics are divided into segments, and this configuration determines the size of each log segment file. 
+    - When a segment reaches this size, it is closed and a new one is created.
+
+
+👉 Message Size Limit (max.message.bytes): 
+
+    - Sets the largest size of a message that can be appended to the topic.
+
+👉 Compression Type (compression.type): 
+
+    - Messages in Kafka can be compressed. 
+    - Common compression types include gzip, snappy, lz4, and zstd.    
+
+
+👉 Message Timestamp Type (message.timestamp.type): 
+
+    - Determines whether the timestamp in the message is set by the producer or the Kafka broker.
+
+
+👉 Message Timestamp Difference Max (message.timestamp.difference.max.ms):
+
+    - This is the maximum difference allowed between the timestamp in the message and the timestamp stored by the broker. 
+    - If the difference is larger than this value, the message is rejected. 
+    - This is useful for detecting messages that have been sent with an incorrect timestamp.
+
+
+👉 Min-In-Sync Replicas (min.insync.replicas): 
+
+    - This is the minimum number of replicas that must acknowledge a write before it is considered successful. 
+    - This is useful for ensuring that messages are not lost if a broker fails. 
+    - If the number of replicas falls below this value, the producer will receive an error.
+
+
+👉 Preallocate (preallocate):
+    
+    - This determines whether the log files are preallocated. 
+    - Preallocating files can improve performance, but it can also lead to wasted disk space if the log files are not filled. 
+    - This is only available for file-based topics.
+
+
+👉 Flush Interval (flush.messages, flush.ms):
+
+    - This is the number of messages or the time period (in milliseconds) after which the log is flushed to disk. 
+    - This is only available for file-based topics.
+
+
+## --------------------------------------------
+
+
+👉 Unclean Leader Election Enable (unclean.leader.election.enable):
+
+    - This determines whether a replica that is not in-sync can become a leader. 
+    - Disabling it improves data consistency but can impact availability in the case of broker failures.
+
+## --------------------------------------------    
+
+
+Naming Conventions
+https://www.notion.so/nagcloudlab/Naming-Conventions-5d2cf76985c948c4bde94c89af0c8f35
+
+Overriding Configuration Defaults
+https://www.notion.so/nagcloudlab/Overriding-Configuration-Defaults-72e875681d3e4af0a9e324939e58747f
+
+
+Segments & Indexes
+https://www.notion.so/nagcloudlab/Segments-and-Indexes-ce75770ab6b94ec1979eb45d925a442b
+
+
+Log Retention:
+https://www.notion.so/nagcloudlab/Log-Retention-229d7c4e1d47421c9eac817bce3bf4d5
+
+
+Minimum In-Sync Replicas
+https://www.notion.so/nagcloudlab/Minimum-In-Sync-Replicas-f76def90f29240bd908fa8cb84462528
+
+
+Log Compaction:
+https://www.notion.so/nagcloudlab/Log-Compaction-e37c677f0de64fcda7e030cc740bb9ea
+
+
+Choosing the Replication Factor and Partition Count 
+https://www.notion.so/nagcloudlab/Choosing-the-Replication-Factor-and-Partition-Count-0ea23e226be946288a3fde91b5c3a625
+
+
+How to send Large Messages in Apache Kafka?
+https://www.notion.so/nagcloudlab/How-to-send-Large-Messages-in-Apache-Kafka-1e52529df1da4700b5af107d06f9c3dd
