@@ -39,7 +39,7 @@ kafka-server-start etc/kafka/server.properties
 
 create topic
 ```bash
-kafka-topics --create --topic test --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1
+kafka-topics --create --topic test --bootstrap-server localhost:9092 --replication-factor 1 --partitions 3
 ```
 
 list topic
@@ -131,22 +131,25 @@ kafka-server-start etc/kafka/server-3.properties
 
 create topic
 ```bash
-kafka-topics --create --topic test --bootstrap-server localhost:9093 --replication-factor 1 --partitions 3
+kafka-topics --create --topic test --bootstrap-server localhost:9092 --replication-factor 1 --partitions 3
 ```
 
 list topic
 ```bash
-kafka-topics --list --bootstrap-server localhost:9093
+kafka-topics --list --bootstrap-server localhost:9092
 ```
 
 describe topic
 ```bash
-kafka-topics --describe --topic test --bootstrap-server localhost:9093
+kafka-topics --describe --topic test --bootstrap-server localhost:9092
 ```
 
 console producer
 ```bash
-kafka-console-producer --topic test --bootstrap-server localhost:9093
+kafka-console-producer --topic test --bootstrap-server localhost:9092
 ```
 
-
+console consumer
+```bash
+kafka-console-consumer --topic test --from-beginning --bootstrap-server localhost:9092
+```
