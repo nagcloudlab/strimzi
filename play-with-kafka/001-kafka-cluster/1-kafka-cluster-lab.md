@@ -44,30 +44,6 @@ start kafka
 kafka-server-start etc/kafka/server.properties
 ```
 
-create topic
-```bash
-kafka-topics --create --topic test --bootstrap-server localhost:9092 --replication-factor 1 --partitions 3
-```
-
-list topic
-```bash
-kafka-topics --list --bootstrap-server localhost:9092
-```
-
-describe topic
-```bash
-kafka-topics --describe --topic test --bootstrap-server localhost:9092
-```
-
-console producer
-```bash
-kafka-console-producer --topic test --bootstrap-server localhost:9092
-```
-
-delete topic
-```bash
-kafka-topics --delete --topic test --bootstrap-server localhost:9092
-```
 
 ---
 
@@ -133,36 +109,6 @@ kafka-server-start etc/kafka/server-2.properties
 start broker 3
 ```bash
 kafka-server-start etc/kafka/server-3.properties
-```
-
-create topic
-```bash
-kafka-topics --create --topic test --bootstrap-server localhost:9092 --replication-factor 1 --partitions 3
-```
-
-list topic
-```bash
-kafka-topics --list --bootstrap-server localhost:9092
-```
-
-describe topic
-```bash
-kafka-topics --describe --topic test --bootstrap-server localhost:9092
-```
-
-console producer
-```bash
-kafka-console-producer --topic test --bootstrap-server localhost:9092
-```
-
-console consumer
-```bash
-kafka-console-consumer --topic test  --bootstrap-server localhost:9092 --from-beginning
-```
-
-delete topic
-```bash
-kafka-topics --delete --topic test --bootstrap-server localhost:9092
 ```
 
 ---
