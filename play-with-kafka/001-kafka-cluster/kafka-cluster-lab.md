@@ -12,12 +12,14 @@ java -version
 
 ---
 
-download lastest confluent kafka community edition
+download confluent kafka community edition
 ```bash
 wget https://packages.confluent.io/archive/7.0/confluent-community-7.0.0.tar.gz
 tar -xf confluent-community-7.0.0.tar.gz
 cd confluent-7.0.0
 ```
+
+---
 
 export confluent home-path in bashrc
 ```bash
@@ -25,12 +27,16 @@ code ~/.bashrc
 export PATH=$PATH:$(pwd)/bin
 ```
 
+---
+
 start zookeeper
 ```bash
 zookeeper-server-start etc/kafka/zookeeper.properties
 ```
 
-# single-broker kafka-cluster
+---
+
+# Single-broker kafka-cluster
 
 
 start kafka
@@ -53,7 +59,6 @@ describe topic
 kafka-topics --describe --topic test --bootstrap-server localhost:9092
 ```
 
-
 console producer
 ```bash
 kafka-console-producer --topic test --bootstrap-server localhost:9092
@@ -64,9 +69,9 @@ delete topic
 kafka-topics --delete --topic test --bootstrap-server localhost:9092
 ```
 
+---
 
-
-# multi-broker (3) kafka-cluster
+# multi-broker kafka-cluster
 
 
 create broker 1
@@ -160,3 +165,4 @@ delete topic
 kafka-topics --delete --topic test --bootstrap-server localhost:9092
 ```
 
+---
