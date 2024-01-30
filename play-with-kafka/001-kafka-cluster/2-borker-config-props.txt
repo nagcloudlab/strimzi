@@ -45,6 +45,14 @@ num.io.threads:
     - The default value is 8.
     - If you have more disks, we recommend increasing the number of I/O threads appropriately.
 
+                     #-of-cpus
+    #-of threads = ---------------------
+                      blocking-factor ( 0 to 1)
+   blocking-factor = 0.5 (for SSD)
+   #-of-threads = 8 / 0.5 = 16
+
+
+
 socket.send.buffer.bytes:
 
     - The SO_SNDBUFF buffer of the socket connections.
@@ -84,7 +92,6 @@ log.dirs:
         - log.dir.disk1=/disk1/kafka
         - log.dir.disk2=/disk2/kafka
         - log.dir.disk3=/disk3/kafka
-
 
 num.partitions:
 
@@ -144,6 +151,8 @@ log.retention.bytes:
     - The maximum size of the log before deleting it.
     - The default value is -1, which means that the size is not limited by this setting.
 
+
+
 log.segment.bytes:
 
     - The maximum size of a log segment file.
@@ -161,7 +170,8 @@ log.cleanup.policy:
 
     - The default cleanup policy for segments beyond the retention window.
     - The policy for deleting log segments. 
-    - The default is "delete". Another option is "compact".
+    - The default is "delete". 
+    - Another option is "compact".
 
 
 ############################# Zookeeper #############################
@@ -217,6 +227,8 @@ compression.type:
 
     - Default compression type for newly created topics.
 
+
+-------------------------------------------------------------------------------------------------
 
 message.max.bytes:
 
@@ -309,7 +321,6 @@ replica.socket.receive.buffer.bytes:
 replica.socket.timeout.ms: 
 
     - The socket timeout for network requests.
-
 
 
 -------------------------------------------------------------------------------------------------

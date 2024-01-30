@@ -126,3 +126,18 @@ https://www.notion.so/nagcloudlab/Choosing-the-Replication-Factor-and-Partition-
 
 How to send Large Messages in Apache Kafka?
 https://www.notion.so/nagcloudlab/How-to-send-Large-Messages-in-Apache-Kafka-1e52529df1da4700b5af107d06f9c3dd
+
+
+--------------------------------------------
+
+
+topic -> distributed ( via partitions) commit log
+
+partition -> group of 1 or more segment(s)
+
+             0000001.log
+             0000001.index
+             0000002.timestamp
+
+--------------------------------------------
+
