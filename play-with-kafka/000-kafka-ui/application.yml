@@ -11,5 +11,6 @@ kafka:
   clusters:
     - name: local-kafka-cluster
       bootstrapServers: localhost:9092
+      schemaRegistry: http://localhost:8081
 
 dynamic.config.enabled: true
