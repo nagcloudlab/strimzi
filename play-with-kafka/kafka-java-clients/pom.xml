@@ -15,11 +15,14 @@
     </properties>
 
     <dependencies>
+
+        <!-- Kafka Client -->
         <dependency>
             <groupId>org.apache.kafka</groupId>
             <artifactId>kafka-clients</artifactId>
             <version>3.6.1</version>
         </dependency>
+
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
@@ -32,5 +35,27 @@
         </dependency>
 
     </dependencies>
+
+   <build>
+       <plugins>
+           <plugin>
+               <groupId>org.apache.avro</groupId>
+               <artifactId>avro-maven-plugin</artifactId>
+               <version>1.11.3</version>
+               <executions>
+                   <execution>
+                       <goals>
+                           <goal>schema</goal>
+                       </goals>
+                       <configuration>
+                           <sourceDirectory>${project.basedir}/src/main/avro/</sourceDirectory>
+                           <outputDirectory>${project.build.directory}/generated-sources/avro/</outputDirectory>
+                       </configuration>
+                   </execution>
+               </executions>
+           </plugin>
+       </plugins>
+   </build>
+
 
 </project>

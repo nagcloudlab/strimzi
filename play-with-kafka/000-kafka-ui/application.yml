@@ -5,6 +5,8 @@ logging:
     reactor.netty.http.server.AccessLog: INFO
     org.springframework.security: DEBUG
 
+server.port: 8181
+
 kafka:
   clusters:
     - name: local-kafka-cluster
