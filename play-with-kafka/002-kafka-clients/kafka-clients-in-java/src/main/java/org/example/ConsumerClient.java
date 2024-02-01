@@ -61,7 +61,7 @@ public class ConsumerClient {
         Map<TopicPartition, OffsetAndMetadata> currentProcessedOffsets = new HashMap<>(); // or redis...
 
         KafkaConsumer<String, String> kafkaConsumer = new KafkaConsumer<>(properties);
-        kafkaConsumer.subscribe(Arrays.asList("topic1"));
+        kafkaConsumer.subscribe(Arrays.asList("topic2"));
 
         // get a reference to the current thread
         final Thread mainThread = Thread.currentThread();
@@ -83,6 +83,7 @@ public class ConsumerClient {
                 // logger.info("Received " + consumerRecords.count() + " records");
                 consumerRecords.forEach(consumerRecord -> {
                     logger.info(" Partition:" + consumerRecord.partition() + " Offset:" + consumerRecord.offset());
+                    logger.info("Value:" + consumerRecord.value());
                     // try {
                     // TimeUnit.SECONDS.sleep(3); // Processing
                     // } catch (InterruptedException e) {

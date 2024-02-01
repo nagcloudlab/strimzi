@@ -11,11 +11,11 @@ kafka:
   clusters:
     - name: local-kafka-cluster
       bootstrapServers: localhost:9092
-      schemaRegistry: http://localhost:8081
-      kafkaConnect:
-        - name: w1
-          address: http://localhost:8083
-        - name: w2
-          address: http://localhost:8084
+      # schemaRegistry: http://localhost:8081
+      # kafkaConnect:
+      #   - name: w1
+      #     address: http://localhost:8083
+      #   - name: w2
+      #     address: http://localhost:8084
 
 dynamic.config.enabled: true
