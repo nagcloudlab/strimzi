@@ -6,11 +6,14 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="simple-java-clients" />
-        <module name="transaction-consumer" />
-        <module name="transaction-producer" />
+        <module name="kafka-clients-in-java" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="simple-java-clients" target="17" />
+      <module name="transaction-consumer" target="17" />
+      <module name="transaction-producer" target="17" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">

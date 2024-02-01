@@ -7,6 +7,7 @@
         <option value="$PROJECT_DIR$/play-with-kafka/clients/simple-java-clients/pom.xml" />
         <option value="$PROJECT_DIR$/play-with-kafka/clients/transaction-consumer/pom.xml" />
         <option value="$PROJECT_DIR$/play-with-kafka/clients/transaction-producer/pom.xml" />
+        <option value="$PROJECT_DIR$/play-with-kafka/002-kafka-clients/kafka-clients-in-java/pom.xml" />
       </list>
     </option>
     <option name="workspaceImportForciblyTurnedOn" value="true" />
