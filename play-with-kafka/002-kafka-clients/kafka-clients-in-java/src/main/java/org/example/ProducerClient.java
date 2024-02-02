@@ -15,7 +15,7 @@ public class ProducerClient {
 
         Properties properties = new Properties();
         properties.put("client.id", "producer-1");
-        properties.put("bootstrap.servers", "localhost:9092,localhost:9093,localhost:9094");
+        properties.put("bootstrap.servers", "localhost:9092");
         properties.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
         properties.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
         // properties.put("partitioner.class","org.example.CustomPartitioner");
@@ -41,11 +41,11 @@ public class ProducerClient {
 //                "Apache Kafka is a distributed event store and stream-processing platform. It is an open-source system developed by the Apache Software Foundation written in Java and Scala. The project aims to provide a unified, high-throughput, low-latency platform for handling real-time data feed\n" +
 //                "Apache Kafka is a distributed event store and stream-processing platform. It is an open-source system developed by the Apache Software Foundation write";
 
-        for (int i = 1; i <= 1000; i++) {
+        for (int i = 1; i <= Integer.MAX_VALUE; i++) {
             // String key="key-"+Integer.toString(i);
             String value=Integer.toString(i);
             TimeUnit.SECONDS.sleep(1);
-            ProducerRecord<String, String> producerRecord = new ProducerRecord<String, String>("topic1", value);
+            ProducerRecord<String, String> producerRecord = new ProducerRecord<String, String>("topic_foo", value);
             kafkaProducer.send(producerRecord, (recordMetadata, e) -> {
                 if (e == null) {
                     logger.info("Received new metadata. \n" +

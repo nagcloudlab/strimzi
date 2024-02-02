@@ -1,0 +1,13 @@
+
+
+-------------------------------------------
+- start zookeeper -1
+- start broker(s) - 3
+- start kafka-ui 
+-------------------------------------------
+- kafka clients
+    - console producer/consumer 
+    - producer-consumer-perf tools
+    - java/python clients
+---------------------------------------------    
+

@@ -34,3 +34,22 @@ reset topic config
 ```bash
 kafka-configs --alter --entity-type topics --entity-name test --bootstrap-server localhost:9092 --delete-config retention.ms
 ```
+
+
+
+-----------------------------------------------------------------
+
+
+create topic with 3 partitions
+```bash
+kafka-topics --create --topic test --bootstrap-server localhost:9092 --replication-factor 1 --partitions 3
+```
+
+
+Manual Partition Assignment ( assume we have brokers 1,2,3 )
+create topic with 3 partitions and 2 replicas, place partions on brokers 1 and 2 using the --replica-assignment option
+```bash
+kafka-topics --create --topic test --bootstrap-server localhost:9092 --replication-factor 2 --partitions 3 --replica-assignment 0:1,1:2,2:0
+```
+
+-----------------------------------------------------------------
