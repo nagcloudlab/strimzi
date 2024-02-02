@@ -1,7 +1,4 @@
 
-
-
-
 create a file sink connector
 ```bash
 curl -X POST -H "Content-Type: application/json" --data '{"name": "quickstart-file-sink", "config": {"connector.class":"FileStreamSink", "tasks.max":"1", "file":"test_1.txt", "topics":"test1"}}' http://localhost:8083/connectors | jq

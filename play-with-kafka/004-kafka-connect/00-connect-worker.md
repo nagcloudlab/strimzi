@@ -1,8 +1,7 @@
 
 
 
-edit properties file to set plugin path
-connect-distributed.properties
+edit properties file to set plugin path "connect-distributed.properties"
 
 plugin.path=
 
