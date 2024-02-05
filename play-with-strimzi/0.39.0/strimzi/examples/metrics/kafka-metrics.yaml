@@ -9,7 +9,7 @@ spec:
     listeners:
       - name: plain
         port: 9092
-        type: internal
+        type: nodeport
         tls: false
       - name: tls
         port: 9093
@@ -25,10 +25,10 @@ spec:
     storage:
       type: jbod
       volumes:
-      - id: 0
-        type: persistent-claim
-        size: 100Gi
-        deleteClaim: false
+        - id: 0
+          type: persistent-claim
+          size: 100Gi
+          deleteClaim: false
     metricsConfig:
       type: jmxPrometheusExporter
       valueFrom:
@@ -53,6 +53,7 @@ spec:
   kafkaExporter:
     topicRegex: ".*"
     groupRegex: ".*"
+  cruiseControl: {}
 ---
 kind: ConfigMap
 apiVersion: v1

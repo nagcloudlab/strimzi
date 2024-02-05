@@ -13,6 +13,11 @@ To deploy a persistent cluster:
 kubectl apply -f ../strimzi/examples/kafka/kafka-persistent.yaml -n kafka
 ```
 
+Deploys ZooKeeper with 3 nodes, and 2 different pools of Kafka brokers. Each of the pools has 3 brokers. The pools in the example use different storage configuration.
+```bash
+kubectl apply -f ../strimzi/examples/kafka/nodepools/kafka.yaml -n kafka
+```
+
 Check the status of the deployment:
 ```bash
 kubectl get pods -n kafka -w
