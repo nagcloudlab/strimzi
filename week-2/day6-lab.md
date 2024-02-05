@@ -13,6 +13,12 @@ minikube start --cpus=4 --memory=10240 --disk-size=30g --driver=docker
 
 --------------------------------------------------------------------------------
 
+az group create -l centralindia -n nag-rg
+az aks create -g nag-rg -n nag-aks --node-count 1 --generate-ssh-keys
+az group delete -n nag-rg -y
+
+--------------------------------------------------------------------------------
+
 kubectl get nodes
 kubectl get svc
 
@@ -21,7 +27,7 @@ kubectl get svc
 Deploying the Cluster Operator
 
 kubectl create namespace kafka
-sed -i 's/namespace: .*/namespace: kafka/' ./strimzi-0.39/install/cluster-operator/*RoleBinding*.yaml
+sed -i 's/namespace: .*/namespace: kafka/' ./00-strimzi-0.39/install/cluster-operator/*RoleBinding*.yaml
 
 kubectl create -f ./strimzi-0.39/install/cluster-operator -n kafka
 kubectl get deployment -n kafka
@@ -42,6 +48,7 @@ kubectl get svc -n kafka
 
 Deploying the Kafka Topic
 kubectl create -f ./02-kafka-topic.yaml -n kafka
+
 
 --------------------------------------------------------------------------------
 
@@ -92,3 +99,7 @@ kubectl get service grafana
 kubectl port-forward svc/grafana 3000:3000 -n kafka
 
 --------------------------------------------------------------------------------
+
+
+
+

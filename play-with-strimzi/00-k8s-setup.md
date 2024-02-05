@@ -15,7 +15,18 @@ create azure-group and aks-cluster
 ---
 
 ```bash
-az group delete -n aks-rg -y
-az group create -l centralindia -n aks-rg
-az aks create -g aks-rg -n aks --node-count 3 --generate-ssh-keys
+az group create -l centralindia -n nag-rg
+az aks create -g nag-rg -n aks --node-count 1 --generate-ssh-keys
+az group delete -n nag-rg -y
 ```
+
+
+
+
+
+
+
+
+
+
+
