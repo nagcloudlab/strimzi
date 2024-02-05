@@ -20,7 +20,7 @@ public class ConsumerClient {
     public static void main(String[] args) {
 
         Properties properties = new Properties();
-        properties.put("bootstrap.servers", "localhost:9092,localhost:9093,localhost:9094");
+        properties.put("bootstrap.servers", "192.168.49.2:31895");
         properties.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
         properties.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
 
@@ -61,7 +61,7 @@ public class ConsumerClient {
         Map<TopicPartition, OffsetAndMetadata> currentProcessedOffsets = new HashMap<>(); // or redis...
 
         KafkaConsumer<String, String> kafkaConsumer = new KafkaConsumer<>(properties);
-        kafkaConsumer.subscribe(Arrays.asList("topic2"));
+        kafkaConsumer.subscribe(Arrays.asList("my-topic"));
 
         // get a reference to the current thread
         final Thread mainThread = Thread.currentThread();

@@ -9,7 +9,7 @@ metadata:
     strimzi.io/use-connector-resources: "true"
 spec:
   image: nagabhushanamn/connect-debezium:latest
-  replicas: 1
+  replicas: 2
   bootstrapServers: my-cluster-kafka-plain-bootstrap:9092
   # tls:
   #   trustedCertificates:
