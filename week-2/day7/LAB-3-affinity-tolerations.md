@@ -15,7 +15,7 @@ KafkaMirrorMaker2.spec.template.pod
 
 
 👉 Use pod anti-affinity to avoid critical applications sharing nodes
-Use node affinity to schedule workloads onto specific nodes
+👉 Use node affinity to schedule workloads onto specific nodes
 👉 Use node affinity and tolerations for dedicated nodes
 
 

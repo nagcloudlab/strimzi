@@ -299,3 +299,12 @@ kubectl apply -f <node_pool_configuration_file>
 By applying this resource, you switch Kafka to using node pools.
 There is no change or rolling update and resources are identical to how they were before.
 
+
+
+
+
+```bash
+kubectl apply -f ./kafka.yaml -n kafka
+kubectl delete kafkanodepool pool-b -n kafka
+kubectl get pods -n kafka -w
+```

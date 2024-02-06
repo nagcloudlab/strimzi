@@ -38,7 +38,6 @@ File systems
 
 
 
-
 Disk usage
 
 👉 Use separate disks for Apache Kafka and ZooKeeper.
@@ -264,6 +263,7 @@ kubectl apply -f <kafka_configuration_file>
 Kubernetes increases the capacity of the selected persistent volumes in response to a request from the Cluster Operator. When the resizing is complete, the Cluster Operator restarts all pods that use the resized persistent volumes. This happens automatically.
 
 👉 The resizing operation is not immediate and may take some time to complete.
+
 kubectl get pv
 
 

@@ -66,7 +66,7 @@ Deploying the Kafka UI
 
 helm repo add kafka-ui https://provectus.github.io/kafka-ui-charts
 helm install kafka-ui kafka-ui/kafka-ui --set envs.config.KAFKA_CLUSTERS_0_NAME=local --set envs.config.KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=my-cluster-kafka-plain-bootstrap:9092 --namespace kafka
-kubectl --namespace kafka port-forward kafka-ui-7b6dbf48c4-tp4rp 8080:8080
+kubectl --namespace kafka port-forward kafka-ui-7b6dbf48c4-mmvcq 8080:8080
 
 --------------------------------------------------------------------------------
 

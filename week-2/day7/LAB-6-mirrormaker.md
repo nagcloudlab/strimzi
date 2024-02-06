@@ -18,6 +18,7 @@ Using MirrorMaker 2.0, you just need to identify your source and target clusters
 https://strimzi.io/assets/images/posts/2020-03-30-mirrormaker.png
 
 
+
 Bidirectional opportunities
 
 https://strimzi.io/assets/images/posts/2020-03-30-mirrormaker-renaming.png
@@ -28,7 +29,6 @@ https://strimzi.io/assets/images/posts/2020-03-30-mirrormaker-renaming.png
 This means you can use it to replicate data from a source cluster to a target cluster, and also from the target cluster back to the source cluster.
 
 👉 This is useful for scenarios where you have a primary and secondary data center, and you want to ensure that data is replicated in both directions between the two data centers. This can help to ensure that data is available and consistent in both data centers, and can also help to reduce the impact of network outages between the two data centers.
-
 
 
 
