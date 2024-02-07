@@ -114,9 +114,16 @@ Send and receive messages  ( Producer and Consumer )
 
 kubectl -n kafka get svc
 
-kubectl -n kafka run kafka-producer -ti --image=quay.io/strimzi/kafka:0.39.0-kafka-3.6.1 --rm=true --restart=Never -- bin/kafka-console-producer.sh --bootstrap-server my-cluster-kafka-plain-bootstrap:9092 --topic my-topic
+kubectl -n kafka run kafka-producer -ti --image=quay.io/strimzi/kafka:0.39.0-kafka-3.6.1 --rm=true --restart=Never -- bin/kafka-console-producer.sh --bootstrap-server cluster-a-kafka-bootstrap:9092 --topic my-topic
 
-kubectl -n kafka run kafka-consumer -ti --image=quay.io/strimzi/kafka:0.39.0-kafka-3.6.1 --rm=true --restart=Never -- bin/kafka-console-consumer.sh --bootstrap-server my-cluster-kafka-plain-bootstrap:9092 --topic my-topic --from-beginning
+
+kubectl -n kafka run kafka-topics -ti --image=quay.io/strimzi/kafka:0.39.0-kafka-3.6.1 --rm=true --restart=Never -- bin/kafka-topics.sh --bootstrap-server cluster-a-kafka-bootstrap:9092 --list
+
+
+kubectl -n kafka run kafka-topics -ti --image=quay.io/strimzi/kafka:0.39.0-kafka-3.6.1 --rm=true --restart=Never -- bin/kafka-topics.sh --bootstrap-server cluster-b-kafka-bootstrap:9092 --list
+
+
+kubectl -n kafka run kafka-consumer -ti --image=quay.io/strimzi/kafka:0.39.0-kafka-3.6.1 --rm=true --restart=Never -- bin/kafka-console-consumer.sh --bootstrap-server cluster-b-kafka-bootstrap:9092 --topic cluster-a.my-topic --from-beginning
 
 Java Clients
 

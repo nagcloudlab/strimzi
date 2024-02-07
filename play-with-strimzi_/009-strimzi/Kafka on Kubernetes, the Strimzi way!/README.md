@@ -81,7 +81,6 @@ This part will cover these topics:
 Expose Kafka cluster to external applications
 Apply TLS encryption
 Explore Kubernetes resources behind the scenes
-Use Kafka CLI and Go client applications to test our cluster setup
 
 
 kubectl apply -f kafka-external.yaml

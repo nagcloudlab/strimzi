@@ -1,6 +1,6 @@
 
 Generating CA certificates: 
-Strimzi can automatically generate a self-signed CA certificate, which is then used to sign broker and client certificates.
+Strimzi can automatically generate a self-signed CA certificate, which is then used to sign broker and client/user certificates.
 
 Creating broker certificates: 
 Each Kafka broker in the cluster receives a TLS certificate signed by the CA, ensuring that clients can verify the broker's identity.

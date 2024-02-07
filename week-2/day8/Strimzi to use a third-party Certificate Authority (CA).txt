@@ -14,7 +14,8 @@ Step 1: Prepare Your CA Certificates and Keys
 Ensure you have the following items from your third-party CA:
 
 1. CA certificate (ca.crt): The public certificate of your CA.
-2. CA key (ca.key): The private key of your CA. This needs to be kept secure and should not be shared.
+2. CA key (ca.key): The private key of your CA. 
+This needs to be kept secure and should not be shared.
 
 Step 2: Create Kubernetes Secrets for Your CA
 ------------------------------------------------
@@ -31,7 +32,8 @@ kubectl create secret generic my-cluster-ca-key --from-file=ca.key=</path/to/ca.
 Step 3: Configure Your Kafka Cluster to Use the External CA
 ------------------------------------------------
 
-When creating your Kafka cluster using the Strimzi Kafka custom resource, specify the secrets that contain your third-party CA certificate and key. 
+When creating your Kafka cluster using the Strimzi Kafka custom resource, 
+specify the secrets that contain your third-party CA certificate and key. 
 Here is an example snippet to include in your Kafka CR:
 
 ```yml
@@ -66,13 +68,18 @@ Apply the Kafka custom resource to your Kubernetes cluster:
 kubectl apply -f kafka.yaml -n <namespace>
 
 Step 5: Managing Certificates
+------------------------------------------------
 With your third-party CA now integrated with Strimzi, 
-you'll need to manage certificate renewal and distribution according to your CA's policies and your organizational requirements. 
-Ensure that renewed certificates are updated in the respective Kubernetes secrets and properly distributed to clients and brokers as needed.
+you'll need to manage certificate renewal and distribution according to your CA's policies 
+and your organizational requirements. 
+Ensure that renewed certificates are updated in the respective Kubernetes secrets 
+and properly distributed to clients and brokers as needed.
+
 
 Additional Considerations
 Security: 
-Ensure that the CA key secret is adequately protected, as it allows for the issuance of new certificates.
+Ensure that the CA key secret is adequately protected, 
+as it allows for the issuance of new certificates.
 
 Certificate Renewal: 
 Plan for the renewal process of CA and client/broker certificates to avoid service interruptions. 

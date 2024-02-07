@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
+// appln : my-user
+
 public class ProducerClient {
 
     private static final Logger logger = org.slf4j.LoggerFactory.getLogger(ProducerClient.class);
@@ -16,9 +18,17 @@ public class ProducerClient {
 
         Properties properties = new Properties();
         properties.put("client.id", "producer-1");
-        properties.put("bootstrap.servers", "192.168.49.2:31816");
+        properties.put("bootstrap.servers", "20.235.194.21:9093");
         properties.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
         properties.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+        properties.put("security.protocol", "SSL");
+//        properties.setProperty("ssl.protocol", "TLSv1.2");
+        properties.put("ssl.truststore.location", "/home/nag/strimzi/week-2/day8/kafka-truststore.jks");
+        properties.put("ssl.truststore.password", "changeit");
+//
+        properties.put("ssl.keystore.location", "/home/nag/strimzi/week-2/day8/kafka-keystore.jks");
+        properties.put("ssl.keystore.password", "foobar");
+
         // properties.put("partitioner.class","org.example.CustomPartitioner");
 
         // // safe producer congiuration properties
@@ -42,13 +52,12 @@ public class ProducerClient {
                 "Apache Kafka is a distributed event store and stream-processing platform. It is an open-source system developed by the Apache Software Foundation written in Java and Scala. The project aims to provide a unified, high-throughput, low-latency platform for handling real-time data feed\n" +
                 "Apache Kafka is a distributed event store and stream-processing platform. It is an open-source system developed by the Apache Software Foundation write";
 
-        for (int i = 0; i <= Integer.MAX_VALUE; i++) {
+        for (int i = 0; i <Integer.MAX_VALUE; i++) {
             // String key="key-"+Integer.toString(i);
 //            String value=Integer.toString(i);
             TimeUnit.MILLISECONDS.sleep(1);
-            ProducerRecord<String, String> producerRecord1 = new ProducerRecord<String, String>("topic1", 2,null,value);
-            ProducerRecord<String, String> producerRecord2 = new ProducerRecord<String, String>("topic2", 0,null,value);
-            List.of(producerRecord1, producerRecord2).forEach(producerRecord -> {
+            ProducerRecord<String, String> producerRecord1 = new ProducerRecord<String, String>("my-topic", 0,null,value);
+            List.of(producerRecord1).forEach(producerRecord -> {
                 kafkaProducer.send(producerRecord, (recordMetadata, e) -> {
                     if (e == null) {
                         logger.info("Received new metadata. \n" +

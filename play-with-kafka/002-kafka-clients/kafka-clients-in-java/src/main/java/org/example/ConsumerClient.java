@@ -20,11 +20,20 @@ public class ConsumerClient {
     public static void main(String[] args) {
 
         Properties properties = new Properties();
-        properties.put("bootstrap.servers", "192.168.49.2:31895");
+        properties.put("bootstrap.servers", "20.235.194.21:9093");
         properties.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
         properties.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
 
-        properties.put("group.id", "test-group-1");
+        properties.put("security.protocol", "SSL");
+//        properties.setProperty("ssl.protocol", "TLSv1.2");
+        properties.put("ssl.truststore.location", "/home/nag/strimzi/week-2/day8/kafka-truststore.jks");
+        properties.put("ssl.truststore.password", "changeit");
+
+
+        properties.put("ssl.keystore.location", "/home/nag/strimzi/week-2/day8/kafka-keystore.jks");
+        properties.put("ssl.keystore.password", "foobar");
+
+        properties.put("group.id", "my-group");
         properties.put("auto.offset.reset", "earliest");
 
         // partion assignment strategy
