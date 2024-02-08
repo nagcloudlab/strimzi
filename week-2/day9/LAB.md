@@ -156,6 +156,14 @@ Broker's Listeners
 
 
 -----------------------------------------------------
+
+kubectl get pod -n kafka
+kubectl get svc -n kafka
+kubectl get ingress -n kafka
+
+kubectl describe ingress my-cluster-kafka-bootstrap -n kafka -o yaml
+
+-----------------------------------------------------
 Create truststore from CA certificate
 -----------------------------------------------------  
 
@@ -167,15 +175,53 @@ Test with Kafka Client ( Producer  ) ( java based)
 
 🤚
 
+-----------------------------------------------------
+Metrics - kafka-Exporter, Prometheus, Grafana
+-----------------------------------------------------
 
 
+**Updating kafka Custom Resource for Kafka Exporter & Prometheus Monitoring**
 
 
-kubectl get nodes --show-labels
-kubectl apply -f ./kafka.yaml -n kafka
+**Deploying the Prometheus Operator**
+
+
+curl -s https://raw.githubusercontent.com/coreos/prometheus-operator/master/bundle.yaml > ./metrics/prometheus-operator-deployment.yaml
+sed -E -i '/[[:space:]]*namespace: [a-zA-Z0-9-]*$/s/namespace:[[:space:]]*[a-zA-Z0-9-]*$/namespace: kafka/' ./metrics/prometheus-operator-deployment.yaml
+kubectl create -f ./metrics/prometheus-operator-deployment.yaml -n kafka
+kubectl get pods -n kafka
+
+
+**Deploying Prometheus**
+
+sed -i 's/namespace: .*/namespace: kafka/' ./metrics/prometheus-install/prometheus.yaml
+kubectl apply -f ./metrics/prometheus-additional-properties/prometheus-additional.yaml -n kafka
+kubectl apply -f ./metrics/prometheus-install/strimzi-pod-monitor.yaml -n kafka
+kubectl apply -f ./metrics/prometheus-install/prometheus-rules.yaml -n kafka
+kubectl apply -f ./metrics/prometheus-install/prometheus.yaml -n kafka
+kubectl get pods -n kafka -w
+
+
+**Deploying Grafana**
+
+kubectl apply -f ./metrics/grafana-install/grafana.yaml -n kafka
+kubectl get service grafana -n kafka
+<!-- kubectl port-forward svc/grafana 3000:3000 -n kafka -->
+<!-- kubectl delete -f ./metrics/ingress-grafana.yaml -n kafka -->
+<!-- kubectl get ingress ingress-grafana -n kafka -->
+
+
+kubectl delete -f ./kafka_v1.yaml -n kafka
+kubectl apply -f ./kafka_v2.yaml -n kafka
 kubectl get pod -o wide -n kafka
-kubectl delete -f ./kafka.yaml -n kafka
 
+
+
+
+
+-----------------------------------------------------
+Mirror Maker 2
+-----------------------------------------------------
 
 
 

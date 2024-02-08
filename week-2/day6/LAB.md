@@ -21,7 +21,7 @@ Azure Aks
 --------------------------------------------------------------------------------
 
 az group create -l centralindia -n nag-rg
-az aks create -g nag-rg -n nag-aks --node-count 1 --generate-ssh-keys
+az aks create -g nag-rg -n nag-aks --node-count 3 --generate-ssh-keys
 az group delete -n nag-rg -y
 
 --------------------------------------------------------------------------------

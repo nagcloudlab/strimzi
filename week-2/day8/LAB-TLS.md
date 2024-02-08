@@ -34,7 +34,9 @@ Step 1: Deploy a Certificate Authority (CA)
 
 Step 2: Configure the Kafka Cluster for TLS
 
-kubectl apply -f kafka-tls.yaml -n kafka
+
+kubectl apply -f kafka.yaml -n kafka
+kubectl delete -f kafka.yaml -n kafka
 
 
 Step 4: Configure Kafka Clients for TLS
@@ -64,7 +66,7 @@ demo-2: mTLS with Kafka
 ------------------------------------------------------------------------
 
 
-kubectl apply -f kafka-tls.yaml -n kafka
+kubectl apply -f kafka.yaml -n kafka
 
 export CLUSTER_NAME=my-cluster
 kubectl get configmap/${CLUSTER_NAME}-kafka-0 -o yaml -n kafka
@@ -79,6 +81,7 @@ Create a KafkaUser resource for mTLS authentication.
 Strimzi will automatically generate a client certificate for this user.
 
 kubectl apply -f kafka-user.yaml -n kafka
+kubectl delete -f kafka-user.yaml -n kafka
 
 
 
@@ -109,7 +112,8 @@ sudo keytool -importkeystore -deststorepass $KEYSTORE_PASSWORD -destkeystore $KE
 
 sudo keytool -list -alias $KAFKA_USER_NAME -keystore $KEYSTORE_NAME
 
-
+kubectl apply -f kafka-topic.yaml -n kafka
+kubectl delete -f kafka-topic.yaml -n kafka
 
 export KAFKA_CLUSTER_NAME=my-cluster
 kubectl get service/${KAFKA_CLUSTER_NAME}-kafka-tls-bootstrap --output=jsonpath={.status.loadBalancer.ingress[0].ip} -n kafka

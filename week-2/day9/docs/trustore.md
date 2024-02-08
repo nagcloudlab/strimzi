@@ -1,7 +1,7 @@
 
 
 
-
+rm -rf ../ssl
 export CLUSTER_NAME=my-cluster
 kubectl get secret $CLUSTER_NAME-cluster-ca-cert -n kafka -o jsonpath='{.data.ca\.crt}' | base64 -d > ssl/ca.crt
 kubectl get secret $CLUSTER_NAME-cluster-ca-cert -n kafka -o jsonpath='{.data.ca\.password}' | base64 --decode > ssl/ca.password

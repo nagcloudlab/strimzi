@@ -18,16 +18,16 @@ public class ProducerClient {
 
         Properties properties = new Properties();
         properties.put("client.id", "producer-1");
-        properties.put("bootstrap.servers", "20.235.194.21:9093");
+        properties.put("bootstrap.servers", "https://kafka.nagcloudlab.com:443");
         properties.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
         properties.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
         properties.put("security.protocol", "SSL");
-//        properties.setProperty("ssl.protocol", "TLSv1.2");
-        properties.put("ssl.truststore.location", "/home/nag/strimzi/week-2/day8/kafka-truststore.jks");
+////        properties.setProperty("ssl.protocol", "TLSv1.2");
+        properties.put("ssl.truststore.location", "/home/nag/strimzi/week-2/day9/ssl/kafka-truststore.jks");
         properties.put("ssl.truststore.password", "changeit");
-//
-        properties.put("ssl.keystore.location", "/home/nag/strimzi/week-2/day8/kafka-keystore.jks");
-        properties.put("ssl.keystore.password", "foobar");
+
+//        properties.put("ssl.keystore.location", "/home/nag/ingress-demo/kafka-keystore.jks");
+//        properties.put("ssl.keystore.password", "foobar");
 
         // properties.put("partitioner.class","org.example.CustomPartitioner");
 
