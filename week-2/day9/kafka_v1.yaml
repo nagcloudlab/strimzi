@@ -1,0 +1,111 @@
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaNodePool
+metadata:
+  name: pool-a
+  labels:
+    strimzi.io/cluster: my-cluster
+spec:
+  replicas: 3
+  roles:
+    - broker
+  storage:
+    type: jbod
+    volumes:
+      - id: 0
+        type: persistent-claim
+        size: 100Gi
+        deleteClaim: false
+---
+apiVersion: kafka.strimzi.io/v1beta2
+kind: Kafka
+metadata:
+  name: my-cluster
+  annotations:
+    strimzi.io/node-pools: enabled
+spec:
+  kafka:
+    version: 3.6.0
+    # The replicas field is required by the Kafka CRD schema while the KafkaNodePools feature gate is in alpha phase.
+    # But it will be ignored when Kafka Node Pools are used
+    replicas: 3
+    listeners:
+      - name: plain
+        port: 9092
+        type: internal
+        tls: false
+      - name: tls
+        port: 9093
+        type: internal
+        tls: true
+      - name: external
+        port: 9094
+        type: ingress
+        tls: true
+        # authentication:
+        #   type: tls
+        configuration:
+          bootstrap:
+            host: kafka.nagcloudlab.com
+          brokers:
+            - broker: 0
+              host: broker-0.kafka.nagcloudlab.com
+            - broker: 1
+              host: broker-1.kafka.nagcloudlab.com
+            - broker: 2
+              host: broker-2.kafka.nagcloudlab.com
+          class: nginx
+    # authorization:
+    # type: simple
+    rack:
+      topologyKey: topology.kubernetes.io/zone
+    config:
+      offsets.topic.replication.factor: 1
+      transaction.state.log.replication.factor: 1
+      transaction.state.log.min.isr: 1
+      default.replication.factor: 1
+      min.insync.replicas: 1
+      inter.broker.protocol.version: "3.6"
+    # The storage field is required by the Kafka CRD schema while the KafkaNodePools feature gate is in alpha phase.
+    # But it will be ignored when Kafka Node Pools are used
+    storage:
+      type: jbod
+      volumes:
+        - id: 0
+          type: persistent-claim
+          size: 1Gi
+          deleteClaim: true
+    # resources:
+    #   requests:
+    #     cpu: 1
+    #     memory: 1Gi
+    #   limits:
+    #     cpu: 2
+    #     memory: 2Gi
+    # jvmOptions:
+    #   -Xmx: "1G"
+    #   -Xms: "1G"
+    template:
+      pod:
+        tolerations:
+          - key: "dedicated"
+            operator: "Equal"
+            value: "Kafka"
+            effect: "NoSchedule"
+        affinity:
+          nodeAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+                - matchExpressions:
+                    - key: dedicated
+                      operator: In
+                      values:
+                        - Kafka
+  zookeeper:
+    replicas: 3
+    storage:
+      type: persistent-claim
+      size: 1Gi
+      deleteClaim: true
+  entityOperator:
+    topicOperator: {}
+    userOperator: {}
