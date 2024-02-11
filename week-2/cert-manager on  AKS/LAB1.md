@@ -54,7 +54,7 @@ Deploy a sample web server
 
 kubectl apply -f deployment.yaml
 
-export AZURE_LOADBALANCER_DNS_LABEL_NAME=lb-$(uuidgen) # ❗ The label must start with a lowercase ASCII letter
+export AZURE_LOADBALANCER_DNS_LABEL_NAME=lb-$(uuidgen)
 envsubst < service.yaml | kubectl apply -f -
 
 kubectl get service helloweb
@@ -76,7 +76,6 @@ curl --insecure -v https://www.$DOMAIN_NAME
 az extension add --name aks-preview
 
 
-
 az feature register --namespace "Microsoft.ContainerService" --name "EnableWorkloadIdentityPreview"
 
 # It takes a few minutes for the status to show Registered. Verify the registration status by using the az feature list command:
@@ -92,7 +91,7 @@ Reconfigure the cluster
 az aks update \
     --name nag-aks \
     --enable-oidc-issuer \
-    --enable-workload-identity # ℹ️ This option is currently only available when using the aks-preview extension.
+    --enable-workload-identity 
 
 Reconfigure cert-manager
 

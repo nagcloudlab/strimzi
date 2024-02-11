@@ -9,11 +9,13 @@ az aks create \
     --resource-group nag-rg \
     --name nag-aks \
     --generate-ssh-keys \
-    --node-count 6 \
+    --node-count 3 \
     --zones 1 2 3
 
 kubectl get nodes -o wide
 kubectl get nodes --show-labels
+
+az aks delete -n nag-aks --resource-group nag-rg --yes
 
 az group delete -n nag-rg --yes
 
@@ -23,10 +25,12 @@ ingress-nginx setup on AKS
 
 helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
 helm repo update
+
 helm install ingress-nginx ingress-nginx/ingress-nginx \
   --create-namespace \
   --namespace kafka \
   --set controller.service.annotations."service\.beta\.kubernetes\.io/azure-load-balancer-health-probe-request-path"=/healthz
+
 kubectl get services --namespace kafka -o wide ingress-nginx-controller
 
 -----------------------------------------------------
@@ -64,6 +68,7 @@ spec:
 kubectl rollout status deployment ingress-nginx-controller -n kafka
 kubectl describe deployment ingress-nginx-controller -n kafka
 
+
 -----------------------------------------------------
 rack-awareness
 -----------------------------------------------------
@@ -72,11 +77,12 @@ rack-awareness
 
 https://docs.google.com/presentation/d/1pMTUxbKQqLo9Dq_oqL-ZSaXo8PU1cQPndUyQwGgox3w/edit#slide=id.g266c580a345_1_55
 
+
 -----------------------------------------------------
-Node Affinity
+Affinity
 -----------------------------------------------------
 
-./docs/node-affinity.md
+./docs/affinity.md
 https://docs.google.com/presentation/d/1pMTUxbKQqLo9Dq_oqL-ZSaXo8PU1cQPndUyQwGgox3w/edit#slide=id.g268704068db_0_4
 
 
@@ -91,6 +97,8 @@ kubectl label nodes aks-nodepool1-32500729-vmss000001 dedicated=Kafka
 kubectl label nodes aks-nodepool1-32500729-vmss000002 dedicated=Kafka
 
 
+
+
 -----------------------------------------------------
 Deploy Strimzi Operator(s)
 -----------------------------------------------------
@@ -99,14 +107,13 @@ Deploying the Cluster Operator
 
 kubectl create namespace kafka
 sed -i 's/namespace: .*/namespace: kafka/' ./strimzi-0.38.0/install/cluster-operator/*RoleBinding*.yaml
-
 kubectl create -f ./strimzi-0.38.0/install/cluster-operator -n kafka
 kubectl get deployment -n kafka
 kubectl get pods -n kafka -o wide
 kubectl logs deployment/strimzi-cluster-operator -n kafka 
 kubectl delete -f ./strimzi-0.38.0/install/cluster-operator -n kafka
 
-🛑 single replica 'cluster-operator' is not safe for production
+🛑 single replica 'cluster-operator' is not safe for production, recommended 2
 
 https://docs.google.com/presentation/d/1pMTUxbKQqLo9Dq_oqL-ZSaXo8PU1cQPndUyQwGgox3w/edit#slide=id.g268704068db_0_101
 
@@ -128,7 +135,6 @@ Storage, How Many Disks? ,Partition Rebalance
 https://docs.google.com/presentation/d/1pMTUxbKQqLo9Dq_oqL-ZSaXo8PU1cQPndUyQwGgox3w/edit#slide=id.g268764217b2_0_105
 
 
-
 -----------------------------------------------------
 Broker's Listeners
 -----------------------------------------------------
@@ -137,7 +143,6 @@ Broker's Listeners
 
   - PLAINTEXT
   - TLS
-  - EXTERNAL
   - LOADBALANCER
   - NODEPORT
   - ROUTE
@@ -155,6 +160,11 @@ Broker's Listeners
 
 -----------------------------------------------------
 
+<!-- kubectl delete -f ./kafka_v1.yaml -n kafka -->
+kubectl apply -f ./kafka_v2.yaml -n kafka
+kubectl get pod -o wide -n kafka
+
+
 kubectl get pod -n kafka
 kubectl get svc -n kafka
 kubectl get ingress -n kafka
@@ -168,7 +178,7 @@ Create truststore from CA certificate
 ./docs/truststore.md
 
 -----------------------------------------------------
-Test with Kafka Client ( Producer  ) ( java based)
+Test with Kafka Client ( Producer  ) ( java based )
 -----------------------------------------------------  
 
 🤚
@@ -209,17 +219,10 @@ kubectl get service grafana -n kafka
 <!-- kubectl get ingress ingress-grafana -n kafka -->
 
 
-kubectl delete -f ./kafka_v1.yaml -n kafka
-kubectl apply -f ./kafka_v2.yaml -n kafka
-kubectl get pod -o wide -n kafka
-
-
-
-
 
 -----------------------------------------------------
 Mirror Maker 2
 -----------------------------------------------------
 
-
+./docs/mirror-maker-2.md
 

@@ -152,7 +152,6 @@ spec:
   jvmOptions: # (38)
     "-Xmx": "1g"
     "-Xms": "1g"
-  image: my-org/my-image:latest # (39)
   rack:
     topologyKey: topology.kubernetes.io/zone # (40)
   template: # (41)

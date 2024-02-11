@@ -17,4 +17,4 @@ spec:
             hostedZoneName: nagcloudlab.com
             environment: AzurePublicCloud
             managedIdentity:
-              clientID: 45af35d7-d89c-4a87-b967-685c87bd7a9f
+              clientID: c56ef694-39ac-416d-82a2-59d53d986492

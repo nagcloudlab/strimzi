@@ -10,7 +10,7 @@ There are several ways of getting the best out of Apache Kafka:
 Pod Anti-Affinity
 ----------------------
 
-Strimzi supports pod affinity for Kafka, Zookeeper, Kafka Connect and Topic Operator. 
+Strimzi supports pod affinity for Kafka, Zookeeper, Kafka Connect and Topic&User Operator. 
 You can use it to specify the pods which should never run on the same node as Kafka pods. 
 Affinity can be specified in the Custom Resources (CR) under the affinity property.
 
@@ -146,30 +146,25 @@ To show in detail how the dedicated nodes work, I deployed a 3 node Kafka cluste
 
 $ kubectl get nodes -o wide
 NAME                         STATUS    ROLES     AGE       VERSION   EXTERNAL-IP      OS-IMAGE                KERNEL-VERSION              CONTAINER-RUNTIME
-ip-10-0-0-124.ec2.internal   Ready     <none>    7m        v1.10.5   34.238.153.57    CentOS Linux 7 (Core)   3.10.0-862.3.2.el7.x86_64   docker://18.6.0
-ip-10-0-0-236.ec2.internal   Ready     <none>    33s       v1.10.5   54.152.210.78    CentOS Linux 7 (Core)   3.10.0-862.3.2.el7.x86_64   docker://18.6.0
 ip-10-0-0-60.ec2.internal    Ready     master    7m        v1.10.5   35.171.124.109   CentOS Linux 7 (Core)   3.10.0-862.3.2.el7.x86_64   docker://18.6.0
+ip-10-0-0-124.ec2.internal   Ready     <none>    7m        v1.10.5   34.238.153.57    CentOS Linux 7 (Core)   3.10.0-862.3.2.el7.x86_64   docker://18.6.0
 ip-10-0-1-115.ec2.internal   Ready     <none>    7m        v1.10.5   107.23.251.223   CentOS Linux 7 (Core)   3.10.0-862.3.2.el7.x86_64   docker://18.6.0
-ip-10-0-1-18.ec2.internal    Ready     <none>    35s       v1.10.5   54.152.8.252     CentOS Linux 7 (Core)   3.10.0-862.3.2.el7.x86_64   docker://18.6.0
 ip-10-0-2-31.ec2.internal    Ready     <none>    7m        v1.10.5   184.72.149.131   CentOS Linux 7 (Core)   3.10.0-862.3.2.el7.x86_64   docker://18.6.0
+ip-10-0-0-236.ec2.internal   Ready     <none>    33s       v1.10.5   54.152.210.78    CentOS Linux 7 (Core)   3.10.0-862.3.2.el7.x86_64   docker://18.6.0
+ip-10-0-1-18.ec2.internal    Ready     <none>    35s       v1.10.5   54.152.8.252     CentOS Linux 7 (Core)   3.10.0-862.3.2.el7.x86_64   docker://18.6.0
 ip-10-0-2-61.ec2.internal    Ready     <none>    55s       v1.10.5   54.209.246.85    CentOS Linux 7 (Core)   3.10.0-862.3.2.el7.x86_64   docker://18.6.0
 
 I picked 3 nodes on which I set the taints and labels:
 
 $ kubectl taint nodes ip-10-0-0-124.ec2.internal dedicated=Kafka:NoSchedule
-node "ip-10-0-0-124.ec2.internal" tainted
 $ kubectl taint nodes ip-10-0-1-115.ec2.internal dedicated=Kafka:NoSchedule
-node "ip-10-0-1-115.ec2.internal" tainted
 $ kubectl taint nodes ip-10-0-2-31.ec2.internal dedicated=Kafka:NoSchedule
-node "ip-10-0-2-31.ec2.internal" tainted
 $ kubectl label nodes ip-10-0-0-124.ec2.internal dedicated=Kafka
-node "ip-10-0-0-124.ec2.internal" labeled
 $ kubectl label nodes ip-10-0-1-115.ec2.internal dedicated=Kafka
-node "ip-10-0-1-115.ec2.internal" labeled
 $ kubectl label nodes ip-10-0-2-31.ec2.internal dedicated=Kafka
-node "ip-10-0-2-31.ec2.internal" labeled
 
-As a result, the cluster has 3 dedicated nodes for Kafka andf 3 nodes for Zookeeper, Strimzi operators and Kafka clients. Now we can deploy the Strimzi Cluster Operator which is scheduled on one of the nodes which are not dedicated to Kafka:
+As a result, the cluster has 3 dedicated nodes for Kafka andf 3 nodes for Zookeeper, Strimzi operators and Kafka clients. 
+Now we can deploy the Strimzi Cluster Operator which is scheduled on one of the nodes which are not dedicated to Kafka:
 
 $ kubectl get pods -o wide
 NAME                                        READY     STATUS    RESTARTS   AGE       IP                NODE

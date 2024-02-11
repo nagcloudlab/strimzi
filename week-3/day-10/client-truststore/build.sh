@@ -1,7 +1,8 @@
 
 # Create a truststore for the external client
 export CLUSTER_NAME=my-cluster
-kubectl get secret $CLUSTER_NAME-cluster-ca-cert -n kafka -o jsonpath='{.data.ca\.crt}' | base64 -d > ./ca.crt
+# kubectl get secret $CLUSTER_NAME-cluster-ca-cert -n kafka -o jsonpath='{.data.ca\.crt}' | base64 -d > ./ca.crt
+kubectl get secret my-cluster-lets-encrypt -n kafka -o jsonpath='{.data.tls\.crt}' | base64 -d > ./ca.crt
 kubectl get secret $CLUSTER_NAME-cluster-ca-cert -n kafka -o jsonpath='{.data.ca\.password}' | base64 --decode > ./ca.password
 export CERT_FILE_PATH=./ca.crt
 export CERT_PASSWORD_FILE_PATH=./ca.password

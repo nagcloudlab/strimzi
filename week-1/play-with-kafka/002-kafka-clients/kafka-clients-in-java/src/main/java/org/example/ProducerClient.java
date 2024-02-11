@@ -18,12 +18,12 @@ public class ProducerClient {
 
         Properties properties = new Properties();
         properties.put("client.id", "producer-1");
-        properties.put("bootstrap.servers", "https://kafka.nagcloudlab.com:443");
+        properties.put("bootstrap.servers", "kafka.nagcloudlab.com:443");
         properties.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
         properties.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
         properties.put("security.protocol", "SSL");
-////        properties.setProperty("ssl.protocol", "TLSv1.2");
-        properties.put("ssl.truststore.location", "/home/nag/strimzi/week-2/day9/ssl/kafka-truststore.jks");
+//        properties.setProperty("ssl.protocol", "TLSv1.2");
+        properties.put("ssl.truststore.location", "/home/nag/strimzi/week-3/day-10/client-truststore/kafka-truststore.jks");
         properties.put("ssl.truststore.password", "changeit");
 
 //        properties.put("ssl.keystore.location", "/home/nag/ingress-demo/kafka-keystore.jks");
@@ -55,7 +55,7 @@ public class ProducerClient {
         for (int i = 0; i <Integer.MAX_VALUE; i++) {
             // String key="key-"+Integer.toString(i);
 //            String value=Integer.toString(i);
-            TimeUnit.MILLISECONDS.sleep(1);
+            TimeUnit.SECONDS.sleep(1);
             ProducerRecord<String, String> producerRecord1 = new ProducerRecord<String, String>("my-topic", 0,null,value);
             List.of(producerRecord1).forEach(producerRecord -> {
                 kafkaProducer.send(producerRecord, (recordMetadata, e) -> {

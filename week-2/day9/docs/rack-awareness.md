@@ -10,7 +10,7 @@ rack-awareness
 
 1. **Define the zones**:
 
-   You can define the zones in your Kubernetes cluster using the `failure-domain.beta.kubernetes.io/zone` label. 
+   You can define the zones in your Kubernetes cluster using the `topology.kubernetes.io/zone` label. 
    This label is automatically applied to nodes in a Kubernetes cluster based on the zone they belong to. 
    You can use this label to define the zones in your Kafka cluster.
 
@@ -32,7 +32,7 @@ rack-awareness
       ...
    ```
     
-   In this example, we have configured the Kafka brokers to use the `failure-domain.beta.kubernetes.io/zone` label to determine the zones they belong to. 
+   In this example, we have configured the Kafka brokers to use the `topology.kubernetes.io/zone` label to determine the zones they belong to. 
    This ensures that the Kafka brokers are distributed across different zones in the Kubernetes cluster.
 
 3. **Deploy the Kafka cluster**:

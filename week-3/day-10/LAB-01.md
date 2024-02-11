@@ -15,8 +15,8 @@ az aks create \
 kubectl get nodes -o wide
 kubectl get nodes --show-labels
 
-az aks delete -n nag-aks --resource-group nag-rg --yes
-az group delete -n nag-rg --yes
+<!-- az aks delete -n nag-aks --resource-group nag-rg --yes -->
+<!-- az group delete -n nag-rg --yes -->
 
 -----------------------------------------------------
 ingress-nginx setup on AKS
@@ -87,13 +87,13 @@ https://docs.google.com/presentation/d/1pMTUxbKQqLo9Dq_oqL-ZSaXo8PU1cQPndUyQwGgo
 
 
 k get nodes -o wide
-kubectl taint nodes aks-nodepool1-43203318-vmss000000 dedicated=Kafka:NoSchedule
-kubectl taint nodes aks-nodepool1-43203318-vmss000001 dedicated=Kafka:NoSchedule
-kubectl taint nodes aks-nodepool1-43203318-vmss000002 dedicated=Kafka:NoSchedule
+kubectl taint nodes aks-nodepool1-41800204-vmss000000 dedicated=Kafka:NoSchedule
+kubectl taint nodes aks-nodepool1-41800204-vmss000001 dedicated=Kafka:NoSchedule
+kubectl taint nodes aks-nodepool1-41800204-vmss000002 dedicated=Kafka:NoSchedule
 
-kubectl label nodes aks-nodepool1-43203318-vmss000000 dedicated=Kafka
-kubectl label nodes aks-nodepool1-43203318-vmss000001 dedicated=Kafka
-kubectl label nodes aks-nodepool1-43203318-vmss000002 dedicated=Kafka
+kubectl label nodes aks-nodepool1-41800204-vmss000000 dedicated=Kafka
+kubectl label nodes aks-nodepool1-41800204-vmss000001 dedicated=Kafka
+kubectl label nodes aks-nodepool1-41800204-vmss000002 dedicated=Kafka
 
 
 -----------------------------------------------------
@@ -162,7 +162,6 @@ Type os Services
 Deploying Kafka Cluster
 -----------------------------------------------------
 
-kubectl apply -f ./strimzi-0.38.0/examples/metrics/kafka-metrics-config-map.yaml -n kafka
 kubectl apply -f ./kafka.yaml -n kafka
 
 kubectl get svc -n kafka
@@ -172,7 +171,7 @@ kubectl describe ingress my-cluster-kafka-bootstrap -n kafka
 
 
 -----------------------------------------------------
-Metrics - kafka-Exporter, Prometheus, Grafana
+Deploy kafka-Exporter, Prometheus, Grafana
 -----------------------------------------------------
 
 **Updating kafka Custom Resource for Kafka Exporter & Prometheus Monitoring**
@@ -198,15 +197,106 @@ kubectl get pods -n kafka
 
 kubectl apply -f ./strimzi-0.38.0/examples/metrics/grafana-install/grafana.yaml -n kafka
 kubectl delete service grafana -n kafka
-<!-- kubectl port-forward svc/grafana 3000:3000 -n kafka -->
-<!-- kubectl delete -f ./metrics/ingress-grafana.yaml -n kafka -->
-<!-- kubectl get ingress ingress-grafana -n kafka -->
-
 
 
 -----------------------------------------------------
-Mirror Maker 2
+#1 How Strimzi's Managing TLS Certificates
 -----------------------------------------------------
 
-./docs/mirror-maker-2.md
+./docs/tls-certificates.md
 
+
+-----------------------------------------------------
+#2 Using your own CA certificates and private keys
+-----------------------------------------------------
+
+
+./docs/custom-ca.md 
+
+cd strimzi-custom-ca-test
+./clean.sh
+./build.sh
+./load.sh
+
+
+kubectl apply -f ./kafka.yaml -n kafka
+
+
+cd external-client-truststore
+./clean.sh
+./build.sh
+
+kubectl delete -f ./kafka.yaml -n kafka
+
+
+-----------------------------------------------------
+#3 Deploy cert-manager on Azure Kubernetes Service (AKS) 
+   use Let's Encrypt to sign a certificate
+-----------------------------------------------------
+
+
+Ref: https://strimzi.io/blog/2021/05/07/deploying-kafka-with-lets-encrypt-certificates/
+Ref: https://cert-manager.io/docs/tutorials/getting-started-aks-letsencrypt/
+
+
+-----------------------------------------------------
+deploy clusterissuer
+-----------------------------------------------------
+
+kubectl apply -f ./clusterissuer.yaml -n kafka
+kubectl get clusterissuers -o wide -n kafka
+kubectl describe clusterissuer nagcloudlab-com-letsencrypt-prod 
+
+
+-----------------------------------------------------
+deploy certificaterequest
+-----------------------------------------------------
+
+kubectl apply -f ./certificate.yaml -n kafka
+
+<!-- cmctl status certificate my-cluster-lets-encrypt -n kafka -->
+<!-- cmctl inspect secret my-cluster-lets-encrypt-tls -->
+
+kubectl get certificate -o wide -n kafka
+kubectl describe certificate my-cluster-lets-encrypt -n kafka
+
+kubectl get secret -o wide -n kafka
+
+kubectl get secret my-cluster-lets-encrypt -n kafka -o yaml 
+
+kubectl apply -f ./kafka.yaml -n kafka
+kubectl delete -f ./kafka.yaml -n kafka
+kubectl describe -f ./kafka.yaml -n kafka
+
+-----------------------------------------------------
+Logging Level
+-----------------------------------------------------
+
+
+./docs/logging-level.md
+
+
+-----------------------------------------------------
+Using External Logging stack ( Elastic stack)
+-----------------------------------------------------
+
+helm repo add elastic https://helm.elastic.co
+
+#install the chart
+
+helm install my-elasticsearch elastic/elasticsearch --version 7.17.3 --set replicas=1
+kubectl get pods -n default -l app=elasticsearch-master -w
+
+helm install my-logstash elastic/logstash --version 7.17.3
+kubectl get pods -n default -l app=my-logstash-logstash -w
+
+helm install my-kibana elastic/kibana --version 7.17.3
+kubectl get pods -n default -l app=kibana -w
+
+helm upgrade my-filebeat elastic/filebeat --values filebeat-values.yaml
+kubectl get pods -n default -l app=my-filebeat-filebeat -w
+
+kubectl get pods
+
+-----------------------------------------------------
+kubectl apply -f ./ingress-kibana.yaml -n default

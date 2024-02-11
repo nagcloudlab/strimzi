@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+ kubectl config set-context --current --namespace=kafka
 # Create secrets, label and annotate secrets
 
 kubectl delete secret my-cluster-cluster-ca-cert
