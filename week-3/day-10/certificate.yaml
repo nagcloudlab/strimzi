@@ -1,0 +1,22 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: my-cluster-lets-encrypt
+  namespace: kafka
+spec:
+  secretName: my-cluster-lets-encrypt
+  issuerRef:
+    name: nagcloudlab-com-letsencrypt-prod
+    kind: ClusterIssuer
+    group: cert-manager.io
+  subject:
+    organizations:
+      - NagCloudLab
+  commonName: nagcloudlab.com
+  dnsNames:
+    - nagcloudlab.com
+    - www.nagcloudlab.com
+    - kafka.nagcloudlab.com
+    - broker-0.kafka.nagcloudlab.com
+    - broker-1.kafka.nagcloudlab.com
+    - broker-2.kafka.nagcloudlab.com

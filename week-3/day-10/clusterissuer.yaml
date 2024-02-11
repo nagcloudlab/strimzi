@@ -1,0 +1,20 @@
+# clusterissuer-lets-encrypt-production.yaml
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: nagcloudlab-com-letsencrypt-prod
+spec:
+  acme:
+    server: https://acme-v02.api.letsencrypt.org/directory
+    email: nagtraininglab@gmail.com
+    privateKeySecretRef:
+      name: letsencrypt
+    solvers:
+      - dns01:
+          azureDNS:
+            resourceGroupName: nag-rg
+            subscriptionID: 9ecbf5b8-8ab3-4e90-b81d-8bd777197b07
+            hostedZoneName: nagcloudlab.com
+            environment: AzurePublicCloud
+            managedIdentity:
+              clientID: 45af35d7-d89c-4a87-b967-685c87bd7a9f

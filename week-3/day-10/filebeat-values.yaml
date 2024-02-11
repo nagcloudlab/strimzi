@@ -1,0 +1,14 @@
+filebeatConfig:
+  filebeat.yml: |
+    setup.dashboards.enabled: true
+    filebeat.modules:
+    - module: kafka
+      # Enable Kafka module
+      enabled: true
+      log:
+        enabled: true
+        var.paths: ["/var/log/kafka/*.log"]  # Adjust the log path according to your Kafka setup
+    output.elasticsearch:
+      hosts: ["http://elasticsearch-master:9200"]  # Adjust with your Elasticsearch host
+    setup.kibana:
+      host: "http://my-kibana-kibana:5601"  # Adjust with your Kibana host
