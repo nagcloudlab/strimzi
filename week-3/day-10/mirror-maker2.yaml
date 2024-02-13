@@ -28,7 +28,7 @@ spec:
     - sourceCluster: "cluster-a"
       targetCluster: "cluster-b"
       sourceConnector:
-        tasksMax: 1
+        tasksMax: 2
         config:
           # -1 means it will use the default replication factor configured in the broker
           replication.factor: -1

@@ -16,7 +16,7 @@ kubectl get nodes -o wide
 kubectl get nodes --show-labels
 
 <!-- az aks delete -n nag-aks --resource-group nag-rg --yes -->
-<!-- az group delete -n nag-rg --yes -->
+az group delete -n nag-rg --yes
 
 -----------------------------------------------------
 ingress-nginx setup on AKS
@@ -169,7 +169,6 @@ kubectl get ingress -n kafka
 
 kubectl describe ingress my-cluster-kafka-bootstrap -n kafka
 
-
 -----------------------------------------------------
 Deploy kafka-Exporter, Prometheus, Grafana
 -----------------------------------------------------
@@ -202,6 +201,7 @@ kubectl delete service grafana -n kafka
 -----------------------------------------------------
 #1 How Strimzi's Managing TLS Certificates
 -----------------------------------------------------
+
 
 ./docs/tls-certificates.md
 
@@ -237,6 +237,7 @@ kubectl delete -f ./kafka.yaml -n kafka
 
 Ref: https://strimzi.io/blog/2021/05/07/deploying-kafka-with-lets-encrypt-certificates/
 Ref: https://cert-manager.io/docs/tutorials/getting-started-aks-letsencrypt/
+
 
 
 -----------------------------------------------------
@@ -299,4 +300,7 @@ kubectl get pods -n default -l app=my-filebeat-filebeat -w
 kubectl get pods
 
 -----------------------------------------------------
+
 kubectl apply -f ./ingress-kibana.yaml -n default
+
+-----------------------------------------------------
