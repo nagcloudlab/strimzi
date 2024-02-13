@@ -1,0 +1,9 @@
+---
+apiVersion: operators.coreos.com/v1
+kind: OperatorGroup
+metadata:
+  name: strimzi-migration-og
+  namespace: strimzi-migration
+spec:
+  targetNamespaces:
+  - strimzi-migration
